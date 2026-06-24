@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX Performance — Premium Fitness Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#080808;--dark:#111;--dark2:#181818;
+  --orange:#E8560A;--orange-light:#FF6B1A;--orange-dim:rgba(232,86,10,0.12);
+  --white:#F0F0F0;--muted:#666;--border:#222;
+  --fd:'Bebas Neue',sans-serif;--fb:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--fb);}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-thumb{background:var(--orange);}
+
+.back-banner{background:var(--orange);padding:10px;text-align:center;}
+.back-banner span{font-size:12px;color:var(--white);letter-spacing:0.05em;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 60px;display:flex;justify-content:space-between;align-items:center;height:72px;}
+.nav-logo{font-family:var(--fd);font-size:28px;letter-spacing:0.06em;color:var(--white);}
+.nav-logo span{color:var(--orange);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;font-weight:500;}
+.nav-links a:hover{color:var(--white);}
+.nav-join{background:var(--orange);color:var(--white);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer;transition:background 0.2s;}
+.nav-join:hover{background:var(--orange-light);}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 80px;position:relative;overflow:hidden;background:var(--black);}
+.hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,86,10,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,86,10,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.hero-glow{position:absolute;top:0;left:0;right:0;height:60%;background:radial-gradient(ellipse at 70% 0%,rgba(232,86,10,0.12) 0%,transparent 60%);pointer-events:none;}
+.hero-label{font-family:var(--fb);font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:12px;position:relative;}
+.hero-label::before{content:'';width:28px;height:1px;background:var(--orange);}
+h1{font-family:var(--fd);font-size:clamp(72px,12vw,160px);line-height:0.88;letter-spacing:0.02em;color:var(--white);margin-bottom:40px;position:relative;}
+h1 .highlight{color:var(--orange);}
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;}
+.hero-sub{font-size:15px;color:var(--muted);max-width:380px;line-height:1.75;font-weight:300;}
+.hero-sub strong{color:var(--white);font-weight:400;}
+.hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:20px;}
+.hero-stats-row{display:flex;gap:40px;}
+.hstat{text-align:right;}
+.hstat-n{font-family:var(--fd);font-size:40px;color:var(--white);line-height:1;}
+.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.14em;margin-top:3px;}
+.btn-orange{background:var(--orange);color:var(--white);font-family:var(--fb);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:16px 36px;border:none;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:10px;}
+.btn-orange:hover{background:var(--orange-light);transform:translateY(-2px);}
+
+/* PROGRAMS */
+#programs{padding:100px 60px;background:var(--black);border-top:1px solid var(--border);}
+.sec-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.sec-h{font-family:var(--fd);font-size:clamp(44px,6vw,72px);color:var(--white);line-height:0.95;margin-bottom:56px;letter-spacing:0.02em;}
+.programs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.prog-card{background:var(--dark);padding:36px 32px;transition:background 0.3s;position:relative;overflow:hidden;}
+.prog-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--orange);transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.prog-card:hover{background:var(--dark2);}
+.prog-card:hover::before{transform:scaleX(1);}
+.prog-level{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.prog-name{font-family:var(--fd);font-size:28px;color:var(--white);margin-bottom:12px;letter-spacing:0.02em;}
+.prog-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+.prog-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.prog-tag{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:4px 10px;}
+
+/* SCHEDULE */
+#schedule{padding:100px 60px;background:var(--dark);}
+.schedule-table{border:1px solid var(--border);overflow:hidden;margin-top:52px;}
+.schedule-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--orange);padding:16px 24px;gap:16px;}
+.sch{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);}
+.schedule-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:20px 24px;gap:16px;border-bottom:1px solid var(--border);transition:background 0.2s;}
+.schedule-row:last-child{border-bottom:none;}
+.schedule-row:hover{background:var(--dark2);}
+.sch-class{font-size:15px;font-weight:500;color:var(--white);}
+.sch-coach{font-size:13px;color:var(--muted);}
+.sch-time{font-size:13px;color:var(--white);}
+.sch-spots{font-size:12px;}
+.spots-open{color:#22C55E;}
+.spots-few{color:var(--orange);}
+.spots-full{color:var(--muted);}
+.book-slot{background:transparent;color:var(--orange);border:1px solid var(--orange);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;cursor:pointer;transition:all 0.2s;}
+.book-slot:hover{background:var(--orange);color:var(--white);}
+
+/* REVIEWS */
+#reviews{padding:100px 60px;background:var(--black);}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:52px;}
+.rev-card{background:var(--dark);padding:32px;}
+.rev-stars{display:flex;gap:2px;margin-bottom:16px;}
+.rev-stars span{color:var(--orange);font-size:14px;}
+.rev-text{font-size:14px;color:var(--white);line-height:1.75;margin-bottom:20px;}
+.rev-name{font-size:13px;font-weight:600;color:var(--white);}
+.rev-label{font-size:11px;color:var(--muted);}
+
+/* MEMBERSHIP */
+#membership{padding:100px 60px;background:var(--dark);}
+.membership-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:52px;}
+.mem-card{background:var(--black);padding:40px 32px;position:relative;}
+.mem-card.featured{background:var(--orange);}
+.mem-tier{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.mem-card.featured .mem-tier{color:rgba(255,255,255,0.7);}
+.mem-name{font-family:var(--fd);font-size:28px;color:var(--white);margin-bottom:8px;}
+.mem-card.featured .mem-name{color:var(--white);}
+.mem-price{font-family:var(--fd);font-size:48px;color:var(--orange);margin-bottom:4px;line-height:1;}
+.mem-card.featured .mem-price{color:var(--white);}
+.mem-period{font-size:12px;color:var(--muted);margin-bottom:28px;}
+.mem-card.featured .mem-period{color:rgba(255,255,255,0.7);}
+.mem-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.mem-features li{font-size:13px;color:var(--muted);padding-left:18px;position:relative;}
+.mem-card.featured .mem-features li{color:rgba(255,255,255,0.85);}
+.mem-features li::before{content:'✓';position:absolute;left:0;color:var(--orange);font-size:11px;}
+.mem-card.featured .mem-features li::before{color:var(--white);}
+.mem-btn{width:100%;padding:14px;font-family:var(--fb);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid var(--orange);background:transparent;color:var(--orange);transition:all 0.2s;}
+.mem-btn:hover{background:var(--orange);color:var(--white);}
+.mem-card.featured .mem-btn{background:var(--white);color:var(--orange);border-color:var(--white);}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:48px 60px 28px;}
+.footer-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:36px;}
+.footer-logo{font-family:var(--fd);font-size:28px;letter-spacing:0.04em;color:var(--white);}
+.footer-logo span{color:var(--orange);}
+.footer-tagline{font-size:12px;color:var(--muted);margin-top:6px;}
+.footer-address{font-size:12px;color:var(--muted);text-align:right;line-height:1.8;}
+.footer-copy{font-size:11px;color:var(--muted);text-align:center;border-top:1px solid var(--border);padding-top:20px;}
+
+@media(max-width:768px){
+  nav{padding:0 24px;}.nav-links{display:none;}
+  #hero{padding:0 24px 60px;}h1{font-size:clamp(56px,16vw,100px);}
+  .hero-bottom{flex-direction:column;gap:28px;align-items:flex-start;}
+  .hero-right{align-items:flex-start;}
+  #programs,#schedule,#reviews,#membership{padding:60px 24px;}
+  .programs-grid,.reviews-grid,.membership-grid{grid-template-columns:1fr;}
+  .schedule-table{overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="back-banner">
+  <span>Demo site built by <strong>ARISE Studio</strong> — arisestudio.dev</span>
+</div>
+
+<nav>
+  <div class="nav-logo">APEX<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <button class="nav-join">Join Now</button>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-label">Premium Fitness Studio — Brisbane</div>
+  <h1>TRAIN<br><span class="highlight">HARDER.</span><br>RISE<br>FURTHER.</h1>
+  <div class="hero-bottom">
+    <p class="hero-sub">APEX is where <strong>serious athletes</strong> and <strong>driven beginners</strong> train together. World-class coaching. State-of-the-art equipment. A community that pushes you further than you'd go alone.</p>
+    <div class="hero-right">
+      <div class="hero-stats-row">
+        <div class="hstat"><div class="hstat-n">850+</div><div class="hstat-l">Active Members</div></div>
+        <div class="hstat"><div class="hstat-n">4.9★</div><div class="hstat-l">Google Rating</div></div>
+        <div class="hstat"><div class="hstat-n">24/7</div><div class="hstat-l">Access</div></div>
+      </div>
+      <button class="btn-orange">Start Free Trial →</button>
+    </div>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="sec-label">Training Programs</div>
+  <h2 class="sec-h">BUILT FOR<br>YOUR GOALS</h2>
+  <div class="programs-grid">
+    <div class="prog-card">
+      <div class="prog-level">All Levels</div>
+      <div class="prog-name">Strength & Conditioning</div>
+      <div class="prog-desc">Compound lifting, progressive overload, and performance tracking. The foundation of every serious physique.</div>
+      <div class="prog-tags"><span class="prog-tag">5x/week</span><span class="prog-tag">All Ages</span><span class="prog-tag">Equipment Provided</span></div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-level">Intermediate+</div>
+      <div class="prog-name">HIIT & Metabolic</div>
+      <div class="prog-desc">High-intensity intervals designed to torch fat and boost cardiovascular capacity in 45 minutes flat.</div>
+      <div class="prog-tags"><span class="prog-tag">Daily Classes</span><span class="prog-tag">Fat Loss</span><span class="prog-tag">Team Format</span></div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-level">All Levels</div>
+      <div class="prog-name">Personal Training</div>
+      <div class="prog-desc">One-on-one coaching built around your specific goals, schedule, and body. Fastest route to your best results.</div>
+      <div class="prog-tags"><span class="prog-tag">1-on-1</span><span class="prog-tag">Custom Program</span><span class="prog-tag">Nutrition Guidance</span></div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-level">Beginner Friendly</div>
+      <div class="prog-name">Functional Fitness</div>
+      <div class="prog-desc">Real-world movement patterns for everyday performance. Build strength, mobility, and balance simultaneously.</div>
+      <div class="prog-tags"><span class="prog-tag">3x/week</span><span class="prog-tag">Low Impact</span></div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-level">Advanced</div>
+      <div class="prog-name">Athletic Performance</div>
+      <div class="prog-desc">Speed, power, and sport-specific training for athletes who want to compete at the highest level.</div>
+      <div class="prog-tags"><span class="prog-tag">Athletes Only</span><span class="prog-tag">Testing</span></div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-level">All Levels</div>
+      <div class="prog-name">Recovery & Mobility</div>
+      <div class="prog-desc">Stretching, foam rolling, and movement therapy to keep you training hard and staying injury-free.</div>
+      <div class="prog-tags"><span class="prog-tag">Daily</span><span class="prog-tag">Recovery</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="schedule">
+  <div class="sec-label">This Week's Classes</div>
+  <h2 class="sec-h">BOOK YOUR<br>NEXT SESSION</h2>
+  <div class="schedule-table">
+    <div class="schedule-header">
+      <div class="sch">Class</div>
+      <div class="sch">Time</div>
+      <div class="sch">Coach</div>
+      <div class="sch">Spots</div>
+    </div>
+    <div class="schedule-row"><div><div class="sch-class">Strength & Conditioning</div></div><div class="sch-time">6:00 AM</div><div class="sch-coach">Coach Alex</div><div><span class="spots-open">8 open</span> <button class="book-slot">Book</button></div></div>
+    <div class="schedule-row"><div><div class="sch-class">HIIT Blitz</div></div><div class="sch-time">7:30 AM</div><div class="sch-coach">Coach Mia</div><div><span class="spots-few">2 left</span> <button class="book-slot">Book</button></div></div>
+    <div class="schedule-row"><div><div class="sch-class">Functional Fitness</div></div><div class="sch-time">9:00 AM</div><div class="sch-coach">Coach Jay</div><div><span class="spots-open">12 open</span> <button class="book-slot">Book</button></div></div>
+    <div class="schedule-row"><div><div class="sch-class">Strength & Conditioning</div></div><div class="sch-time">12:00 PM</div><div class="sch-coach">Coach Alex</div><div><span class="spots-full">Full</span></div></div>
+    <div class="schedule-row"><div><div class="sch-class">Athletic Performance</div></div><div class="sch-time">4:30 PM</div><div class="sch-coach">Coach Tara</div><div><span class="spots-open">5 open</span> <button class="book-slot">Book</button></div></div>
+    <div class="schedule-row"><div><div class="sch-class">HIIT Blitz</div></div><div class="sch-time">6:00 PM</div><div class="sch-coach">Coach Mia</div><div><span class="spots-few">3 left</span> <button class="book-slot">Book</button></div></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="sec-label">Member Stories</div>
+  <h2 class="sec-h">REAL PEOPLE.<br>REAL RESULTS.</h2>
+  <div class="reviews-grid">
+    <div class="rev-card"><div class="rev-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="rev-text">"I've been to 6 gyms in Brisbane. APEX is in a different league. The coaches actually know what they're doing and the community keeps you coming back."</p><div class="rev-name">Jake Morrison</div><div class="rev-label">Member for 18 months</div></div>
+    <div class="rev-card"><div class="rev-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="rev-text">"Lost 14kg in 5 months with the personal training program. Coach Alex completely changed my relationship with training. Worth every dollar."</p><div class="rev-name">Sarah Williams</div><div class="rev-label">Personal Training Client</div></div>
+    <div class="rev-card"><div class="rev-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><p class="rev-text">"The 6am classes are genuinely the best part of my day. I've never been consistent at a gym before — APEX changed that completely."</p><div class="rev-name">Ryan Chen</div><div class="rev-label">Member for 8 months</div></div>
+  </div>
+</section>
+
+<section id="membership">
+  <div class="sec-label">Membership</div>
+  <h2 class="sec-h">CHOOSE YOUR<br>COMMITMENT</h2>
+  <div class="membership-grid">
+    <div class="mem-card">
+      <div class="mem-tier">Starter</div>
+      <div class="mem-name">Essential</div>
+      <div class="mem-price">$69</div>
+      <div class="mem-period">per month</div>
+      <ul class="mem-features">
+        <li>Full gym access (6am–9pm)</li>
+        <li>4 group classes per month</li>
+        <li>App access + class booking</li>
+        <li>Locker room access</li>
+      </ul>
+      <button class="mem-btn">Get Started</button>
+    </div>
+    <div class="mem-card featured">
+      <div class="mem-tier">Most Popular</div>
+      <div class="mem-name">Performance</div>
+      <div class="mem-price">$129</div>
+      <div class="mem-period">per month</div>
+      <ul class="mem-features">
+        <li>24/7 gym access</li>
+        <li>Unlimited group classes</li>
+        <li>1 PT session per month</li>
+        <li>Nutrition guidance</li>
+        <li>Priority class booking</li>
+      </ul>
+      <button class="mem-btn">Join Now</button>
+    </div>
+    <div class="mem-card">
+      <div class="mem-tier">Elite</div>
+      <div class="mem-name">Athlete</div>
+      <div class="mem-price">$219</div>
+      <div class="mem-period">per month</div>
+      <ul class="mem-features">
+        <li>24/7 gym access</li>
+        <li>Unlimited group classes</li>
+        <li>4 PT sessions per month</li>
+        <li>Full nutrition program</li>
+        <li>Body composition testing</li>
+        <li>Recovery suite access</li>
+      </ul>
+      <button class="mem-btn">Go Elite</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">APEX<span>.</span></div>
+      <div class="footer-tagline">Premium fitness for people who take their results seriously.</div>
+    </div>
+    <div class="footer-address">
+      <div>47 Fortitude Valley, Brisbane QLD 4006</div>
+      <div>(07) 3210 9876</div>
+      <div>hello@apexperformance.com.au</div>
+    </div>
+  </div>
+  <div class="footer-copy">© 2026 APEX Performance. All rights reserved. · Website by ARISE Studio — This is a demonstration site.</div>
+</footer>
+
+</body>
+</html>
