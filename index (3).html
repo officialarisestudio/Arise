@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARISE Studio — Premium Web Design & Digital Marketing</title>
+<meta name="description" content="ARISE Studio builds premium websites, manages social media, creates short-form video content, and runs advertising campaigns for businesses ready to dominate online.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#120A06;--surface:#1C1008;--surface2:#231408;
+  --border:#2E1A0E;--border2:#3D2410;
+  --skin:#E8D5C0;--skin-dim:#A89078;--skin-faint:#5A3E2E;
+  --accent:#C17A4A;--accent-dim:rgba(193,122,74,0.12);
+  --fd:'Cormorant Garamond',serif;--fb:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--skin);font-family:var(--fb);cursor:none;overflow-x:hidden;}
+.cur{position:fixed;width:7px;height:7px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.1s;}
+.cur-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(193,122,74,0.4);border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,border-color 0.2s;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--accent);}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;}
+.ld-logo{font-family:var(--fd);font-size:36px;font-weight:600;letter-spacing:0.12em;color:var(--skin);}
+.ld-logo span{color:var(--accent);}
+.ld-track{width:180px;height:1px;background:var(--border2);position:relative;overflow:hidden;}
+.ld-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);animation:ldFill 1.8s cubic-bezier(0.4,0,0.2,1) forwards;}
+.ld-pct{font-family:var(--fm);font-size:10px;letter-spacing:0.18em;color:var(--skin-faint);}
+@keyframes ldFill{from{width:0}to{width:100%}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 52px;display:flex;justify-content:space-between;align-items:center;transition:background 0.4s,border-color 0.4s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(18,10,6,0.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--fd);font-weight:600;font-size:20px;letter-spacing:0.14em;color:var(--skin);background:none;border:none;cursor:none;padding:0;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-btn{font-family:var(--fb);font-size:12px;letter-spacing:0.06em;color:var(--skin-dim);background:none;border:none;cursor:none;padding:4px 0;transition:color 0.2s;font-weight:400;}
+.nav-btn:hover,.nav-btn.active{color:var(--skin);}
+.nav-cta{font-family:var(--fb);font-size:12px;font-weight:500;color:var(--bg);background:var(--accent);padding:10px 24px;border:none;cursor:none;transition:opacity 0.2s,transform 0.2s;}
+.nav-cta:hover{opacity:0.88;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:1px;background:var(--skin);transition:transform 0.3s,opacity 0.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mob-menu{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:190;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:36px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.mob-menu.open{opacity:1;pointer-events:all;}
+.mob-btn{font-family:var(--fd);font-size:40px;font-weight:400;color:var(--skin);background:none;border:none;cursor:none;transition:color 0.2s;letter-spacing:0.02em;}
+.mob-btn:hover{color:var(--accent);}
+.mob-cta-btn{font-family:var(--fb)!important;font-size:13px!important;color:var(--bg)!important;background:var(--accent);padding:14px 36px;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* HOME */
+#home{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 88px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(193,122,74,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(193,122,74,0.04) 1px,transparent 1px);background-size:80px 80px;animation:gridDrift 28s linear infinite;}
+@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(80px)}}
+.hero-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(193,122,74,0.07) 0%,transparent 60%);pointer-events:none;animation:glowPulse 6s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
+.hero-eyebrow{font-family:var(--fb);font-size:11px;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;margin-top:140px;margin-bottom:28px;opacity:0;animation:fadeUp 0.6s ease forwards 0.2s;display:flex;align-items:center;gap:14px;}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--accent);}
+.hero-headline{font-family:var(--fd);font-size:clamp(54px,8vw,124px);font-weight:600;line-height:0.9;letter-spacing:-0.01em;margin-bottom:48px;max-width:980px;}
+.hero-headline .line{display:block;overflow:hidden;}
+.hero-headline .line-inner{display:block;opacity:0;transform:translateY(108%);animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;}
+.hero-headline .line:nth-child(1) .line-inner{animation-delay:0.38s;}
+.hero-headline .line:nth-child(2) .line-inner{animation-delay:0.52s;}
+.hero-headline .line:nth-child(3) .line-inner{animation-delay:0.66s;}
+.hero-headline .accent{color:var(--accent);}
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;opacity:0;animation:fadeUp 0.6s ease forwards 1.0s;}
+.hero-sub{font-size:15px;color:var(--skin-dim);max-width:380px;line-height:1.75;font-weight:300;}
+.hero-sub strong{color:var(--skin);font-weight:400;}
+.hero-actions{display:flex;flex-direction:column;align-items:flex-end;gap:20px;}
+.hero-stats{display:flex;gap:48px;}
+.stat-num{font-family:var(--fd);font-size:32px;font-weight:600;color:var(--skin);display:block;line-height:1;}
+.stat-label{font-family:var(--fb);font-size:10px;color:var(--skin-faint);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;display:block;}
+.hero-btn{display:inline-flex;align-items:center;gap:12px;background:var(--accent);color:var(--bg);font-family:var(--fb);font-size:12px;font-weight:500;letter-spacing:0.04em;padding:14px 32px;border:none;cursor:none;transition:opacity 0.2s,transform 0.2s;}
+.hero-btn:hover{opacity:0.88;transform:translateY(-2px);}
+.hero-btn-ghost{display:inline-flex;align-items:center;gap:12px;background:transparent;color:var(--skin);font-family:var(--fb);font-size:12px;font-weight:400;letter-spacing:0.04em;padding:14px 32px;border:1px solid var(--border2);cursor:none;transition:border-color 0.2s,color 0.2s;}
+.hero-btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 0.5s ease forwards 1.5s;}
+.scroll-cue span{font-family:var(--fm);font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:var(--skin-faint);}
+.scroll-bar{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* INNER PAGES */
+.inner-page{padding:140px 52px 100px;}
+.page-eyebrow{font-family:var(--fb);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.page-eyebrow::before{content:'';width:24px;height:1px;background:var(--accent);}
+.page-title{font-family:var(--fd);font-size:clamp(44px,6vw,88px);font-weight:500;line-height:0.94;letter-spacing:-0.01em;color:var(--skin);}
+.page-subtitle{font-size:15px;color:var(--skin-dim);line-height:1.75;font-weight:300;max-width:560px;margin-top:24px;}
+.page-hero{margin-bottom:72px;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ═══ SERVICES PAGE ═══ */
+.services-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;}
+.services-main-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border);margin-bottom:2px;}
+.services-bottom-grid{display:grid;grid-template-columns:1fr;background:var(--border);}
+.svc-card{background:var(--surface);padding:52px 44px;position:relative;overflow:hidden;transition:background 0.3s;}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.35s;transform-origin:left;}
+.svc-card:hover{background:var(--surface2);}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-card.coming-soon{opacity:0.5;cursor:not-allowed;}
+.svc-card.coming-soon::before{display:none;}
+.svc-icon{width:52px;height:52px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:28px;}
+.svc-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.6;}
+.svc-num{font-family:var(--fm);font-size:10px;color:var(--accent);letter-spacing:0.1em;margin-bottom:20px;opacity:0.7;}
+.svc-name{font-family:var(--fd);font-size:32px;font-weight:500;color:var(--skin);margin-bottom:16px;line-height:1.1;}
+.svc-desc{font-size:14px;color:var(--skin-dim);line-height:1.8;font-weight:300;margin-bottom:28px;}
+.svc-deliverables{list-style:none;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:24px;}
+.svc-deliverables li{font-size:12px;color:var(--skin-dim);display:flex;align-items:center;gap:10px;}
+.svc-deliverables li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.coming-soon-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--skin-faint);border:1px solid var(--border2);padding:6px 16px;margin-top:16px;}
+
+/* ═══ OUR WORK PAGE ═══ */
+.work-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;}
+.work-projects{display:grid;grid-template-columns:1fr;gap:2px;background:var(--border);}
+.project-card{background:var(--surface);display:grid;grid-template-columns:1.2fr 1fr;min-height:360px;transition:background 0.3s;overflow:hidden;}
+.project-card:hover{background:var(--surface2);}
+.project-preview{background:var(--surface2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:360px;}
+.project-preview-inner{width:100%;height:100%;display:flex;flex-direction:column;}
+/* Dental preview */
+.preview-dental{background:linear-gradient(135deg,#0B1F3A 0%,#112647 100%);}
+.preview-dental-bar{height:36px;background:rgba(248,244,238,0.95);display:flex;align-items:center;padding:0 16px;gap:8px;}
+.preview-dot{width:8px;height:8px;border-radius:50%;}
+.preview-dental-body{flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:10px;}
+.preview-dental-h{font-family:'Georgia',serif;font-size:14px;color:white;font-weight:600;}
+.preview-dental-sub{font-size:10px;color:rgba(255,255,255,0.5);line-height:1.4;}
+.preview-dental-btn{display:inline-block;background:#2A7C8A;color:white;font-size:9px;padding:6px 14px;margin-top:4px;width:fit-content;}
+.preview-dental-stats{display:flex;gap:12px;margin-top:8px;}
+.preview-stat{background:rgba(255,255,255,0.08);padding:8px 10px;text-align:center;}
+.preview-stat-n{font-size:13px;color:white;font-weight:600;}
+.preview-stat-l{font-size:8px;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+/* Law preview */
+.preview-law{background:#0C0C0C;}
+.preview-law-bar{height:36px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 16px;}
+.preview-law-logo{font-family:'Georgia',serif;font-size:12px;color:#B8952A;font-weight:600;}
+.preview-law-body{flex:1;padding:20px 16px;}
+.preview-law-h{font-family:'Georgia',serif;font-size:16px;color:white;font-weight:500;line-height:1.3;margin-bottom:10px;}
+.preview-law-stat{font-family:'Georgia',serif;font-size:24px;color:#B8952A;font-weight:700;}
+.preview-law-stat-l{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:0.1em;}
+.preview-law-cta{margin-top:12px;background:#B8952A;color:#0C0C0C;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:7px 16px;display:inline-block;}
+/* Fitness preview */
+.preview-fitness{background:#080808;}
+.preview-fitness-bar{height:36px;background:#111;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 16px;}
+.preview-fitness-logo{font-family:'Arial Black',sans-serif;font-size:14px;color:white;font-weight:900;letter-spacing:0.06em;}
+.preview-fitness-logo span{color:#E8560A;}
+.preview-fitness-body{flex:1;padding:16px;}
+.preview-fitness-h{font-family:'Arial Black',sans-serif;font-size:20px;color:white;line-height:0.9;letter-spacing:0.04em;margin-bottom:12px;text-transform:uppercase;}
+.preview-fitness-h span{color:#E8560A;}
+.preview-fitness-stats{display:flex;gap:8px;}
+.preview-fitness-stat{background:#181818;padding:8px;text-align:center;flex:1;}
+.preview-fitness-sn{font-family:'Arial Black',sans-serif;font-size:14px;color:white;}
+.preview-fitness-sl{font-size:8px;color:#666;text-transform:uppercase;}
+
+.project-info{padding:44px 40px;display:flex;flex-direction:column;justify-content:space-between;}
+.project-niche{font-family:var(--fb);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.project-name{font-family:var(--fd);font-size:32px;font-weight:500;color:var(--skin);margin-bottom:16px;line-height:1.1;}
+.project-desc{font-size:13px;color:var(--skin-dim);line-height:1.75;font-weight:300;margin-bottom:24px;}
+.project-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:32px;}
+.project-features li{font-size:12px;color:var(--skin-dim);display:flex;align-items:center;gap:8px;}
+.project-features li::before{content:'✓';color:var(--accent);font-size:11px;flex-shrink:0;}
+.project-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.project-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:11px;font-weight:500;letter-spacing:0.06em;padding:11px 22px;cursor:pointer;transition:all 0.2s;}
+.project-btn-primary{background:var(--accent);color:var(--bg);border:none;}
+.project-btn-primary:hover{opacity:0.88;}
+.project-btn-ghost{background:transparent;color:var(--skin);border:1px solid var(--border2);}
+.project-btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.project-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;}
+.ptag{font-family:var(--fm);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--skin-faint);border:1px solid var(--border2);padding:4px 10px;}
+
+/* ═══ PRICING PAGE ═══ */
+.pricing-intro{text-align:center;max-width:640px;margin:0 auto 72px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.price-card{background:var(--surface);padding:48px 36px;position:relative;display:flex;flex-direction:column;}
+.price-card.featured{background:var(--surface2);}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background 0.3s;}
+.price-card.featured::before{background:var(--accent);}
+.price-card:hover::before{background:var(--accent);}
+.price-badge{display:inline-block;font-family:var(--fb);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:4px 12px;margin-bottom:20px;width:fit-content;}
+.price-name{font-family:var(--fd);font-size:26px;font-weight:500;color:var(--skin);margin-bottom:8px;line-height:1.1;}
+.price-tagline{font-size:12px;color:var(--skin-faint);margin-bottom:28px;line-height:1.5;}
+.price-amount{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
+.price-currency{font-family:var(--fd);font-size:22px;color:var(--accent);}
+.price-num{font-family:var(--fd);font-size:52px;font-weight:600;color:var(--skin);line-height:1;}
+.price-period{font-family:var(--fm);font-size:11px;color:var(--skin-faint);}
+.price-save{font-size:11px;color:var(--accent);margin-bottom:28px;font-style:italic;}
+.price-divider{height:1px;background:var(--border);margin-bottom:28px;}
+.price-includes{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;flex:1;}
+.price-includes li{font-size:13px;color:var(--skin-dim);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.price-includes li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;}
+.price-includes li strong{color:var(--skin);font-weight:500;}
+.price-btn{width:100%;padding:14px;font-family:var(--fb);font-size:12px;font-weight:500;letter-spacing:0.06em;cursor:none;border:1px solid var(--border2);background:transparent;color:var(--skin);transition:all 0.2s;margin-top:auto;}
+.price-btn:hover,.price-card.featured .price-btn{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.pricing-note{text-align:center;margin-top:40px;font-size:13px;color:var(--skin-faint);}
+.pricing-note strong{color:var(--skin-dim);}
+
+/* ═══ REVIEWS PAGE ═══ */
+.reviews-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;}
+.reviews-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-bottom:2px;}
+.rsummary-card{background:var(--surface);padding:36px 32px;text-align:center;}
+.rsummary-num{font-family:var(--fd);font-size:52px;font-weight:600;color:var(--accent);line-height:1;}
+.rsummary-label{font-size:11px;color:var(--skin-faint);text-transform:uppercase;letter-spacing:0.1em;margin-top:8px;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-bottom:2px;}
+.rev-card{background:var(--surface);padding:36px 32px;display:flex;flex-direction:column;gap:0;transition:background 0.3s;}
+.rev-card:hover{background:var(--surface2);}
+.rev-stars{display:flex;gap:3px;margin-bottom:20px;}
+.rev-star{color:var(--accent);font-size:14px;}
+.rev-text{font-family:var(--fd);font-size:17px;color:var(--skin);line-height:1.7;font-style:italic;margin-bottom:24px;flex:1;}
+.rev-divider{height:1px;background:var(--border);margin-bottom:20px;}
+.rev-author{display:flex;align-items:center;gap:12px;}
+.rev-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent-dim);border:1px solid rgba(193,122,74,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:16px;color:var(--accent);font-weight:600;flex-shrink:0;}
+.rev-name{font-size:14px;font-weight:500;color:var(--skin);}
+.rev-detail{font-size:11px;color:var(--skin-faint);margin-top:2px;}
+.reviews-featured{background:var(--surface);border:1px solid rgba(193,122,74,0.2);padding:52px;margin-bottom:2px;}
+.rfeat-quote{font-family:var(--fd);font-size:clamp(22px,3vw,32px);color:var(--skin);line-height:1.5;font-style:italic;margin-bottom:32px;}
+.rfeat-author{display:flex;align-items:center;gap:20px;}
+.rfeat-avatar{width:56px;height:56px;border-radius:50%;background:var(--accent-dim);border:1px solid rgba(193,122,74,0.25);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;color:var(--accent);font-weight:600;}
+.rfeat-name{font-family:var(--fd);font-size:20px;font-weight:500;color:var(--skin);}
+.rfeat-detail{font-size:12px;color:var(--skin-faint);margin-top:4px;}
+.rfeat-stars{display:flex;gap:3px;margin-top:6px;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;}
+.contact-info{display:flex;flex-direction:column;gap:40px;}
+.contact-block{display:flex;flex-direction:column;gap:12px;}
+.contact-label{font-family:var(--fb);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--skin-faint);display:flex;align-items:center;gap:8px;}
+.contact-label svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+.contact-value{font-family:var(--fd);font-size:20px;font-weight:400;color:var(--skin);}
+.contact-link{color:var(--skin);text-decoration:none;transition:color 0.2s;font-family:var(--fd);font-size:20px;}
+.contact-link:hover{color:var(--accent);}
+.contact-social{display:flex;gap:12px;margin-top:8px;}
+.social-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border2);color:var(--skin-dim);background:none;cursor:none;transition:border-color 0.2s,color 0.2s,background 0.2s;}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+.social-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;}
+.calendly-wrap{background:var(--surface);border:1px solid var(--border);overflow:hidden;min-height:650px;}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:52px 52px 36px;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.footer-logo{font-family:var(--fd);font-weight:600;font-size:18px;letter-spacing:0.14em;color:var(--skin);margin-bottom:12px;}
+.footer-logo span{color:var(--accent);}
+.footer-tagline{font-size:13px;color:var(--skin-faint);line-height:1.65;max-width:220px;}
+.footer-social{display:flex;gap:10px;margin-top:18px;}
+.fsoc{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--border2);color:var(--skin-faint);background:none;cursor:none;transition:border-color 0.2s,color 0.2s;text-decoration:none;}
+.fsoc:hover{border-color:var(--accent);color:var(--accent);}
+.fsoc svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;}
+.footer-col-title{font-family:var(--fb);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--skin-faint);margin-bottom:18px;}
+.footer-col-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.footer-col-links li button{font-size:13px;color:var(--skin-dim);background:none;border:none;cursor:none;padding:0;font-family:var(--fb);transition:color 0.2s;text-align:left;}
+.footer-col-links li button:hover{color:var(--skin);}
+.footer-col-links li a{font-size:13px;color:var(--skin-dim);text-decoration:none;transition:color 0.2s;}
+.footer-col-links li a:hover{color:var(--skin);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:22px;}
+.footer-copy{font-family:var(--fm);font-size:9px;color:var(--skin-faint);letter-spacing:0.05em;}
+
+/* TICKER */
+.ticker{position:fixed;bottom:0;left:0;right:0;height:26px;background:rgba(18,10,6,0.92);border-top:1px solid var(--border);overflow:hidden;z-index:50;}
+.ticker-inner{display:flex;gap:72px;animation:tick 32s linear infinite;white-space:nowrap;height:100%;align-items:center;}
+.titem{font-family:var(--fm);font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--skin-faint);display:flex;align-items:center;gap:8px;}
+.tdot{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.15}}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(108%)}to{opacity:1;transform:translateY(0)}}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav{padding:18px 24px;}.nav-links,.nav-cta{display:none;}.hamburger{display:flex;}
+  .inner-page{padding:100px 24px 80px;}
+  #home{padding:0 24px 80px;}
+  .hero-bottom{flex-direction:column;gap:32px;align-items:flex-start;}
+  .hero-actions{align-items:flex-start;}
+  .hero-stats{gap:28px;}
+  .services-main-grid{grid-template-columns:1fr;}
+  .services-intro,.work-intro,.reviews-hero-grid{grid-template-columns:1fr;gap:24px;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .reviews-grid,.reviews-summary{grid-template-columns:1fr;}
+  .project-card{grid-template-columns:1fr;}
+  .project-preview{min-height:220px;}
+  .contact-grid{grid-template-columns:1fr;gap:48px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;gap:14px;text-align:center;}
+}
+@media(max-width:480px){.footer-top{grid-template-columns:1fr;}.hero-stats{flex-wrap:wrap;gap:20px;}}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<div id="loader">
+  <div class="ld-logo">ARISE<span>.</span></div>
+  <div class="ld-track"><div class="ld-fill"></div></div>
+  <div class="ld-pct" id="ldPct">0%</div>
+</div>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-btn" onclick="nav('home')">Home</button>
+  <button class="mob-btn" onclick="nav('services')">Services</button>
+  <button class="mob-btn" onclick="nav('work')">Our Work</button>
+  <button class="mob-btn" onclick="nav('pricing')">Pricing</button>
+  <button class="mob-btn" onclick="nav('reviews')">Reviews</button>
+  <button class="mob-btn" onclick="nav('contact')">Contact</button>
+  <button class="mob-btn mob-cta-btn" onclick="nav('contact')">Book a Call</button>
+</div>
+
+<nav id="navbar">
+  <button class="nav-logo" onclick="nav('home')">ARISE<span>.</span></button>
+  <ul class="nav-links">
+    <li><button class="nav-btn" id="nb-services" onclick="nav('services')">Services</button></li>
+    <li><button class="nav-btn" id="nb-work" onclick="nav('work')">Our Work</button></li>
+    <li><button class="nav-btn" id="nb-pricing" onclick="nav('pricing')">Pricing</button></li>
+    <li><button class="nav-btn" id="nb-reviews" onclick="nav('reviews')">Reviews</button></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <button class="nav-cta" onclick="nav('contact')">Book a Call</button>
+    <button class="hamburger" id="hb"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">Premium Digital Studio</div>
+  <h1 class="hero-headline">
+    <span class="line"><span class="line-inner">We Build Brands</span></span>
+    <span class="line"><span class="line-inner">That Are</span></span>
+    <span class="line"><span class="line-inner accent" id="scramble">Impossible to Ignore.</span></span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-sub">ARISE builds <strong>premium websites</strong>, manages <strong>social media</strong>, creates <strong>short-form video</strong>, and runs <strong>advertising</strong> for businesses ready to dominate online.</p>
+    <div class="hero-actions">
+      <div class="hero-stats">
+        <div><span class="stat-num">14</span><span class="stat-label">Day Delivery</span></div>
+        <div><span class="stat-num">$500</span><span class="stat-label">Starting From</span></div>
+        <div><span class="stat-num">100%</span><span class="stat-label">Custom Built</span></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="hero-btn" onclick="nav('contact')">Book a Free Call →</button>
+        <button class="hero-btn-ghost" onclick="nav('work')">See Our Work</button>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Explore</span><div class="scroll-bar"></div></div>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="services">
+  <div class="inner-page">
+    <div class="services-intro reveal">
+      <div>
+        <div class="page-eyebrow">What We Do</div>
+        <h1 class="page-title">Every service<br>your brand needs<br>to grow online.</h1>
+      </div>
+      <p class="page-subtitle" style="align-self:end;">We do not offer everything to everyone. We offer four focused services, done at the highest level, for businesses that are serious about their online presence.</p>
+    </div>
+
+    <div class="services-main-grid reveal">
+      <!-- Service 1: Website Design -->
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="svc-num">01</div>
+        <div class="svc-name">Website Design</div>
+        <div class="svc-desc">Custom-built, conversion-focused websites that make your business impossible to ignore. No templates, no shortcuts — every site is designed from scratch around your brand, your customers, and your goals.</div>
+        <ul class="svc-deliverables">
+          <li>Custom UI/UX design — unique to your brand</li>
+          <li>Mobile-first, fully responsive build</li>
+          <li>Online booking & contact integrations</li>
+          <li>SEO optimisation & fast loading</li>
+          <li>14-day delivery guarantee</li>
+        </ul>
+      </div>
+      <!-- Service 2: Social Media Management -->
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="svc-num">02</div>
+        <div class="svc-name">Social Media Management</div>
+        <div class="svc-desc">Full-service social media management that builds your brand, grows your audience, and turns followers into paying customers. Strategy, content creation, scheduling, and community management — all handled for you.</div>
+        <ul class="svc-deliverables">
+          <li>Content calendar — planned 30 days ahead</li>
+          <li>Daily posting across all platforms</li>
+          <li>Caption writing & hashtag strategy</li>
+          <li>Community management & DM responses</li>
+          <li>Monthly analytics & performance report</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="services-main-grid reveal" style="margin-top:2px;">
+      <!-- Service 3: Short-Form Video -->
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+        <div class="svc-num">03</div>
+        <div class="svc-name">Short-Form Video Content</div>
+        <div class="svc-desc">Cinematic, scroll-stopping video content for Reels, TikTok, and YouTube Shorts. We script, produce, and deliver video content that builds brand awareness and drives real engagement — without you needing to film anything.</div>
+        <ul class="svc-deliverables">
+          <li>AI-generated cinematic video production</li>
+          <li>Script writing & concept development</li>
+          <li>Professional captions & motion graphics</li>
+          <li>Platform-optimised formats (Reels/TikTok/Shorts)</li>
+          <li>8–12 videos per month</li>
+        </ul>
+      </div>
+      <!-- Service 4: Advertising -->
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="svc-num">04</div>
+        <div class="svc-name">Advertising</div>
+        <div class="svc-desc">Paid advertising campaigns that generate real leads and measurable ROI. We manage your Meta, Google, and TikTok ads — from creative to targeting to optimization — so every dollar you spend works harder.</div>
+        <ul class="svc-deliverables">
+          <li>Meta Ads (Facebook & Instagram)</li>
+          <li>Google Ads (Search & Display)</li>
+          <li>Ad creative — copy, design, video</li>
+          <li>Audience targeting & A/B testing</li>
+          <li>Weekly performance reporting</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Coming Soon: Applications -->
+    <div class="services-bottom-grid reveal" style="margin-top:2px;">
+      <div class="svc-card coming-soon">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+        <div class="svc-num">05</div>
+        <div class="svc-name">Applications</div>
+        <div class="svc-desc">Native mobile and web application development for businesses ready to take their digital presence to the next level. Custom-built apps for iOS, Android, and web.</div>
+        <div class="coming-soon-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+          Coming Soon
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ OUR WORK ═══════════ -->
+<div class="page" id="work">
+  <div class="inner-page">
+    <div class="work-intro reveal">
+      <div>
+        <div class="page-eyebrow">Our Work</div>
+        <h1 class="page-title">Real sites.<br>Real results.</h1>
+      </div>
+      <p class="page-subtitle" style="align-self:end;">Three industries. Three complete custom builds. Click any project to see the full live website — every detail designed and built by ARISE Studio.</p>
+    </div>
+
+    <div class="work-projects reveal">
+      <!-- Dental -->
+      <div class="project-card">
+        <div class="project-preview preview-dental">
+          <div class="preview-dental-bar">
+            <div class="preview-dot" style="background:#EF4444"></div>
+            <div class="preview-dot" style="background:#F59E0B"></div>
+            <div class="preview-dot" style="background:#10B981"></div>
+          </div>
+          <div class="preview-dental-body">
+            <div class="preview-dental-h">Your smile deserves expert care</div>
+            <div class="preview-dental-sub">Modern dentistry in a comfortable, welcoming environment. Accepting new patients.</div>
+            <div class="preview-dental-btn">Book Appointment →</div>
+            <div class="preview-dental-stats">
+              <div class="preview-stat"><div class="preview-stat-n">4.9★</div><div class="preview-stat-l">Rating</div></div>
+              <div class="preview-stat"><div class="preview-stat-n">2,400+</div><div class="preview-stat-l">Patients</div></div>
+              <div class="preview-stat"><div class="preview-stat-n">15 Yrs</div><div class="preview-stat-l">Experience</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <div class="project-niche">Dental Practice</div>
+            <div class="project-name">Bright Smile Dental</div>
+            <div class="project-desc">A full-service dental clinic site with online booking, patient trust signals, team profiles, and a design that converts first-time visitors into booked appointments.</div>
+            <ul class="project-features">
+              <li>Interactive online booking system</li>
+              <li>Service pages for 6 treatment types</li>
+              <li>Patient reviews & trust section</li>
+              <li>Full mobile optimisation</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-tags"><span class="ptag">Framer</span><span class="ptag">Booking</span><span class="ptag">SEO</span><span class="ptag">Mobile</span></div>
+            <div class="project-actions" style="margin-top:16px;">
+              <button class="project-btn project-btn-primary" onclick="window.open('demo-dental.html','_blank')">View Live Site ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Law -->
+      <div class="project-card">
+        <div class="project-preview preview-law">
+          <div class="preview-law-bar"><div class="preview-law-logo">Sterling.Law</div></div>
+          <div class="preview-law-body">
+            <div class="preview-law-h">When it matters most,<br>you need proven advocates</div>
+            <div style="display:flex;gap:16px;margin-top:12px;">
+              <div><div class="preview-law-stat">$48M+</div><div class="preview-law-stat-l">Recovered</div></div>
+              <div><div class="preview-law-stat">96%</div><div class="preview-law-stat-l">Success Rate</div></div>
+            </div>
+            <div class="preview-law-cta">Free Consultation →</div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <div class="project-niche">Legal Services</div>
+            <div class="project-name">Sterling Law Group</div>
+            <div class="project-desc">A premium law firm site built to communicate authority and trust. Case results, attorney profiles, practice areas, and a consultation booking flow that shortens the sales cycle.</div>
+            <ul class="project-features">
+              <li>Case results & outcome showcase</li>
+              <li>Attorney profiles & credentials</li>
+              <li>Practice area detail pages</li>
+              <li>Free consultation booking flow</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-tags"><span class="ptag">Webflow</span><span class="ptag">CMS</span><span class="ptag">Booking</span><span class="ptag">SEO</span></div>
+            <div class="project-actions" style="margin-top:16px;">
+              <button class="project-btn project-btn-primary" onclick="window.open('demo-law.html','_blank')">View Live Site ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fitness -->
+      <div class="project-card">
+        <div class="project-preview preview-fitness">
+          <div class="preview-fitness-bar"><div class="preview-fitness-logo">APEX<span>.</span></div></div>
+          <div class="preview-fitness-body">
+            <div class="preview-fitness-h">TRAIN<br><span>HARDER.</span></div>
+            <div class="preview-fitness-stats">
+              <div class="preview-fitness-stat"><div class="preview-fitness-sn">850+</div><div class="preview-fitness-sl">Members</div></div>
+              <div class="preview-fitness-stat"><div class="preview-fitness-sn">4.9★</div><div class="preview-fitness-sl">Rating</div></div>
+              <div class="preview-fitness-stat"><div class="preview-fitness-sn">24/7</div><div class="preview-fitness-sl">Access</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <div class="project-niche">Fitness Studio</div>
+            <div class="project-name">APEX Performance</div>
+            <div class="project-desc">A high-energy gym site with live class scheduling, online membership sign-up, trainer profiles, and a bold visual identity that captures the intensity of the brand.</div>
+            <ul class="project-features">
+              <li>Live class schedule & booking</li>
+              <li>3-tier membership sign-up flow</li>
+              <li>Program showcase & trainer profiles</li>
+              <li>Mobile-first, fast-loading build</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-tags"><span class="ptag">Framer</span><span class="ptag">Booking</span><span class="ptag">Membership</span></div>
+            <div class="project-actions" style="margin-top:16px;">
+              <button class="project-btn project-btn-primary" onclick="window.open('demo-fitness.html','_blank')">View Live Site ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<div class="page" id="pricing">
+  <div class="inner-page">
+    <div class="pricing-intro reveal">
+      <div class="page-eyebrow" style="justify-content:center;">Pricing</div>
+      <h1 class="page-title">Simple packages.<br>Serious results.</h1>
+      <p class="page-subtitle" style="margin:20px auto 0;text-align:center;">Each package bundles a core deliverable with ongoing social media management — one monthly plan, one point of contact, everything working together.</p>
+    </div>
+
+    <div class="pricing-grid reveal">
+      <!-- Package 1 -->
+      <div class="price-card">
+        <div class="price-name">Websites + SMMA</div>
+        <div class="price-tagline">Your digital foundation. A site that converts and a social presence that grows.</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-num">800</span>
+        </div>
+        <div class="price-period">/ month</div>
+        <div class="price-divider"></div>
+        <ul class="price-includes">
+          <li><strong>Custom website</strong> — 5–8 pages, fully built & launched</li>
+          <li><strong>Daily social media posting</strong> — content planned & scheduled</li>
+          <li><strong>Caption & hashtag strategy</strong> — written for engagement</li>
+          <li><strong>Monthly analytics report</strong> — traffic + social performance</li>
+          <li><strong>SEO setup</strong> — on-page optimisation included</li>
+          <li><strong>14-day website delivery</strong> — guaranteed</li>
+        </ul>
+        <button class="price-btn" onclick="nav('contact')">Get Started →</button>
+      </div>
+
+      <!-- Package 2 -->
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-name">Short-Form Video + SMMA</div>
+        <div class="price-tagline">Dominate every feed. Video content that stops the scroll + the strategy to back it up.</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-num">700</span>
+        </div>
+        <div class="price-period">/ month</div>
+        <div class="price-divider"></div>
+        <ul class="price-includes">
+          <li><strong>8–12 short-form videos</strong> — scripted, produced, delivered</li>
+          <li><strong>Daily social media posting</strong> — all platforms managed</li>
+          <li><strong>Content calendar</strong> — 30 days planned in advance</li>
+          <li><strong>Community management</strong> — DMs + comments handled</li>
+          <li><strong>Monthly performance report</strong> — views, reach, engagement</li>
+          <li><strong>Platform-specific strategy</strong> — Reels, TikTok, Shorts</li>
+          <li><strong>Need more?</strong> — additional videos at $5 each</li>
+        </ul>
+        <button class="price-btn" onclick="nav('contact')">Get Started →</button>
+      </div>
+
+      <!-- Package 3 -->
+      <div class="price-card">
+        <div class="price-name">Advertising + SMMA</div>
+        <div class="price-tagline">Paid reach meets organic growth. Turn ad spend into real leads.</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-num">850</span>
+        </div>
+        <div class="price-period">/ month + ad spend</div>
+        <div class="price-divider"></div>
+        <ul class="price-includes">
+          <li><strong>Meta & Google Ads</strong> — full campaign management</li>
+          <li><strong>Ad creative</strong> — copy, design, and video ads</li>
+          <li><strong>Daily social media posting</strong> — organic content running</li>
+          <li><strong>Audience targeting</strong> — research + A/B testing</li>
+          <li><strong>Weekly ad performance report</strong> — spend + ROI tracked</li>
+          <li><strong>Retargeting campaigns</strong> — convert warm audiences</li>
+        </ul>
+        <button class="price-btn" onclick="nav('contact')">Get Started →</button>
+      </div>
+    </div>
+
+    <div class="pricing-note reveal">
+      All prices exclude VAT. Ad spend is separate and paid directly to the platform. <strong>Not sure which package fits?</strong> Book a free call — we'll recommend the right one for your goals.
+    </div>
+
+    <div class="reveal" style="max-width:560px;margin:80px auto 0;text-align:center;">
+      <div class="page-eyebrow" style="justify-content:center;">Single Services</div>
+      <h2 style="font-family:var(--fd);font-size:clamp(28px,4vw,40px);font-weight:500;color:var(--skin);margin-bottom:24px;">Prefer one thing at a time?</h2>
+      <ul class="price-includes" style="text-align:left;">
+        <li><strong>Website Design</strong> — $1,000 one-time build</li>
+        <li><strong>Social Media Management</strong> — $500 / month</li>
+        <li><strong>Advertising Management</strong> — $500 / month + ad spend (paid directly to the platform)</li>
+        <li><strong>Short-Form Video</strong> — $5 per video, add-on for active package clients</li>
+        <li><strong>Applications</strong> — <span class="coming-soon-badge">Coming Soon</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ REVIEWS ═══════════ -->
+<div class="page" id="reviews">
+  <div class="inner-page">
+    <div class="reviews-hero-grid reveal">
+      <div>
+        <div class="page-eyebrow">Reviews</div>
+        <h1 class="page-title">What clients say<br>about working<br>with ARISE.</h1>
+      </div>
+      <p class="page-subtitle" style="align-self:end;">Real words from real clients. We let the results and relationships speak louder than any sales pitch.</p>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="reviews-summary reveal">
+      <div class="rsummary-card">
+        <div class="rsummary-num">5.0</div>
+        <div class="rsummary-label">Average Rating</div>
+      </div>
+      <div class="rsummary-card">
+        <div class="rsummary-num">100%</div>
+        <div class="rsummary-label">Would Recommend</div>
+      </div>
+      <div class="rsummary-card">
+        <div class="rsummary-num">14</div>
+        <div class="rsummary-label">Days Avg. Delivery</div>
+      </div>
+    </div>
+
+    <!-- Featured review -->
+    <div class="reviews-featured reveal">
+      <div class="rfeat-quote">"I've worked with three web agencies over the years. None of them delivered what ARISE did — on time, on budget, and beyond what I expected. The site went live and within the first two weeks we had more online enquiries than the entire previous quarter."</div>
+      <div class="rfeat-author">
+        <div class="rfeat-avatar">DM</div>
+        <div>
+          <div class="rfeat-name">Dr. David Mitchell</div>
+          <div class="rfeat-detail">Principal Dentist — Mitchell Dental Group</div>
+          <div class="rfeat-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews grid -->
+    <div class="reviews-grid reveal">
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"ARISE built our firm's website in 12 days. The brief was detailed, the process was smooth, and the result is something we're genuinely proud to send clients to."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">SC</div><div><div class="rev-name">Sarah Chen</div><div class="rev-detail">Managing Partner — Chen & Associates</div></div></div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"Our Instagram went from 400 followers to 3,200 in 60 days with ARISE managing it. More importantly, it's actually bringing in gym members now."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">MJ</div><div><div class="rev-name">Marcus Johnson</div><div class="rev-detail">Owner — Elevate Fitness Studio</div></div></div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"The Reels ARISE produces for our salon are genuinely cinematic. Clients tell us they booked because they saw us on Instagram. That never happened before."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">AL</div><div><div class="rev-name">Amira Lachlan</div><div class="rev-detail">Owner — Lumière Beauty Studio</div></div></div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"We ran Google Ads before with another agency and wasted thousands. ARISE restructured the campaigns and cut our cost per lead by 60% in the first month."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">RT</div><div><div class="rev-name">Robert Torres</div><div class="rev-detail">Director — Torres Legal</div></div></div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"Professional, responsive, and the website is genuinely beautiful. Our old site embarrassed us. This one makes us look like the premium clinic we actually are."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">NP</div><div><div class="rev-name">Dr. Nina Park</div><div class="rev-detail">Principal — Park Dental Practice</div></div></div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars"><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span><span class="rev-star">★</span></div>
+        <p class="rev-text">"We had quotes from three local agencies. ARISE was half the price, had a 14-day guarantee, and the end result was better than any of the portfolios we were shown."</p>
+        <div class="rev-divider"></div>
+        <div class="rev-author"><div class="rev-avatar">KW</div><div><div class="rev-name">Kate Williams</div><div class="rev-detail">Owner — Align Wellness Centre</div></div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:56px;" class="reveal">
+      <p style="font-size:14px;color:var(--skin-faint);margin-bottom:24px;">Ready to be our next success story?</p>
+      <button class="hero-btn" onclick="nav('contact')">Book a Free Call →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="contact">
+  <div class="inner-page">
+    <div class="page-hero reveal">
+      <div class="page-eyebrow">Book a Call</div>
+      <h1 class="page-title">Let's Talk<br>About Your<br><span style="color:var(--accent)">Business.</span></h1>
+      <p class="page-subtitle">Free 30-minute discovery call. No pitch, no pressure — just clarity on what your business needs online.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <div class="contact-block">
+          <div class="contact-label"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Email</div>
+          <a href="mailto:office@arisestudio.contact" class="contact-link">office@arisestudio.contact</a>
+        </div>
+        <div class="contact-block">
+          <div class="contact-label"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2.5"/></svg>Instagram</div>
+          <a href="https://instagram.com/official_arisestudio" target="_blank" class="contact-link">@official_arisestudio</a>
+        </div>
+        <div class="contact-block">
+          <div class="contact-label"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Response Time</div>
+          <div class="contact-value" style="font-size:16px;">Within 24 hours</div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-label">Connect</div>
+          <div class="contact-social">
+            <a href="https://instagram.com/official_arisestudio" target="_blank" class="social-btn"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2.5"/></svg></a>
+            <a href="mailto:office@arisestudio.contact" class="social-btn"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="calendly-wrap">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/arisestudio/30min?hide_gdpr_banner=1&background_color=1C1008&text_color=E8D5C0&primary_color=C17A4A" style="min-width:300px;height:650px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">ARISE<span>.</span></div>
+      <p class="footer-tagline">Premium web design & digital marketing for businesses that can't afford to look amateur online.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/official_arisestudio" target="_blank" class="fsoc"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2.5"/></svg></a>
+        <a href="mailto:office@arisestudio.contact" class="fsoc"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-col-links">
+        <li><button onclick="nav('services')">Website Design</button></li>
+        <li><button onclick="nav('services')">Social Media</button></li>
+        <li><button onclick="nav('services')">Short-Form Video</button></li>
+        <li><button onclick="nav('services')">Advertising</button></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Studio</div>
+      <ul class="footer-col-links">
+        <li><button onclick="nav('work')">Our Work</button></li>
+        <li><button onclick="nav('pricing')">Pricing</button></li>
+        <li><button onclick="nav('reviews')">Reviews</button></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-col-links">
+        <li><a href="mailto:office@arisestudio.contact">office@arisestudio.contact</a></li>
+        <li><a href="https://instagram.com/official_arisestudio" target="_blank">@official_arisestudio</a></li>
+        <li><button onclick="nav('contact')">Book a Call</button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 ARISE Studio. All rights reserved. arisestudio.dev</div>
+    <a href="mailto:office@arisestudio.contact" style="font-family:var(--fm);font-size:10px;color:var(--skin-dim);text-decoration:none;">office@arisestudio.contact</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="titem"><span class="tdot"></span>ARISE Studio — Online</span>
+    <span class="titem">Website Design · SMMA · Video · Advertising</span>
+    <span class="titem">14-Day Delivery Guaranteed</span>
+    <span class="titem">office@arisestudio.contact</span>
+    <span class="titem">@official_arisestudio</span>
+    <span class="titem">arisestudio.dev</span>
+    <span class="titem"><span class="tdot"></span>ARISE Studio — Online</span>
+    <span class="titem">Website Design · SMMA · Video · Advertising</span>
+    <span class="titem">14-Day Delivery Guaranteed</span>
+    <span class="titem">office@arisestudio.contact</span>
+    <span class="titem">@official_arisestudio</span>
+    <span class="titem">arisestudio.dev</span>
+  </div>
+</div>
+
+<script>
+// LOADER
+const loader=document.getElementById('loader'),ldP=document.getElementById('ldPct');
+let lp=0;const lt=setInterval(()=>{lp+=Math.random()*16;if(lp>=100){lp=100;clearInterval(lt);}ldP.textContent=Math.floor(lp)+'%';if(lp===100){setTimeout(()=>{loader.style.opacity='0';loader.style.transition='opacity 0.5s';setTimeout(()=>loader.style.display='none',500);},180);}},110);
+
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*0.11;ry+=(my-ry)*0.11;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('button,a,.wcard,.svc-card,.project-card,.rev-card,.price-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(1.8)';curR.style.width='50px';curR.style.height='50px';curR.style.borderColor='rgba(193,122,74,0.6)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curR.style.width='32px';curR.style.height='32px';curR.style.borderColor='rgba(193,122,74,0.4)';});
+});
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
+
+// HAMBURGER
+const hb=document.getElementById('hb'),mm=document.getElementById('mobMenu');
+hb.addEventListener('click',()=>{hb.classList.toggle('open');mm.classList.toggle('open');});
+
+// PAGE ROUTER
+function nav(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById(id);
+  if(pg){
+    pg.classList.add('active');
+    const nb=document.getElementById('nb-'+id);
+    if(nb)nb.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>{
+      pg.querySelectorAll('.reveal').forEach(el=>{
+        el.classList.remove('visible');
+        const o=new IntersectionObserver(en=>{en.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);o.unobserve(e.target);}});},{threshold:0.05});
+        o.observe(el);
+      });
+    },60);
+  }
+  hb.classList.remove('open');mm.classList.remove('open');
+}
+
+// INITIAL REVEALS
+setTimeout(()=>{
+  document.querySelectorAll('#home .reveal').forEach(el=>{
+    const o=new IntersectionObserver(en=>{en.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);o.unobserve(e.target);}});},{threshold:0.05});
+    o.observe(el);
+  });
+},100);
+
+// SCRAMBLE
+class Scramble{
+  constructor(el){this.el=el;this.chars='!<>-_/[]{}=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ';this.update=this.update.bind(this);}
+  setText(t){const ol=this.el.innerText,len=Math.max(ol.length,t.length);const p=new Promise(r=>this.resolve=r);this.q=[];this.frame=0;for(let i=0;i<len;i++){const s=Math.floor(Math.random()*16),e=s+Math.floor(Math.random()*16);this.q.push({from:ol[i]||'',to:t[i]||'',start:s,end:e});}cancelAnimationFrame(this.raf);this.update();return p;}
+  update(){let out='',done=0;for(let i=0;i<this.q.length;i++){let{from,to,start,end,ch}=this.q[i];if(this.frame>=end){done++;out+=to;}else if(this.frame>=start){if(!ch||Math.random()<0.28){ch=this.chars[Math.floor(Math.random()*this.chars.length)];this.q[i].ch=ch;}out+=`<span style="color:var(--accent);opacity:0.5">${ch}</span>`;}else out+=from;}this.el.innerHTML=out;if(done===this.q.length){this.resolve();}else{this.raf=requestAnimationFrame(this.update);this.frame++;}}
+}
+setTimeout(()=>{
+  const el=document.getElementById('scramble');if(!el)return;
+  const fx=new Scramble(el);
+  const phrases=['Impossible to Ignore.','Built to Convert.','Ready in 14 Days.','Ahead of Everyone.','Impossible to Ignore.'];
+  let i=0;const run=()=>fx.setText(phrases[i]).then(()=>{if(i<phrases.length-1){setTimeout(run,2400);i++;}});run();
+},1200);
+
+// FAQ (kept for any future use)
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{const item=q.parentElement;const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));if(!isOpen)item.classList.add('open');});
+});
+</script>
+</body>
+</html>
